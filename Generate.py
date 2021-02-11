@@ -4,7 +4,100 @@ from cv2 import cv2
 from PIL import Image 
 from datetime import datetime
 
-def generate(data, n): 
+def generate(data, n):
+
+    rows, cols = data.shape
+
+    hor = int(cols/n)
+    ver = int(rows/n)
+    m = int(rows/ver)
+
+    empty = np.zeros((n, m), dtype=int)
+    
+    start_x = 0
+    start_y = 0
+
+    for r in range(len(empty)):
+        for c in range(len(empty[0])):
+            empty[r][c] =  int(np.sum(np.sum(data[start_y:start_y+ver, start_x:start_x+hor]))/(ver*hor))
+            start_x += hor
+            if start_x >= cols:
+                start_x = 0
+        start_y += ver
+        
+    
+    return empty
+
+def revert(data, n, dna):
+
+    rows, cols = data.shape
+
+    hor = int(cols/n)
+    ver = int(rows/n)
+
+    empty = np.zeros((rows, cols))
+
+    start_x = 0
+    start_y = 0
+
+    for row in dna:
+        for val in row:
+            empty[start_y:start_y+ver, start_x:start_x+hor] = val
+            start_x += hor
+            if start_x >= cols:
+                start_x = 0
+        start_y += ver
+        if start_y >= rows:
+            break
+
+    return empty
+    
+            
+def shuffle(grid):
+    #print(datetime.now())
+    # random.seed(datetime.now())
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            grid[row,col] = random.randint(0,256)#int(npR.uniform()*256)
+    
+    return grid
+
+
+def revert2(data, n, dna):
+
+    rows, cols = data.shape
+
+    hor = int(cols/n)
+    ver = int(rows/n)
+
+    empty = np.zeros((rows, cols))
+    row_no = 0
+    col_no = 0
+    
+    y = 0
+
+    for i in range(rows):
+        y += 1
+        for a in range(cols):
+            
+            if y % ver == 0:
+                row_no += 1
+                y = 0
+                if row_no == n:
+                    break
+
+            if a % (hor-1) == 0 and a != 0:
+                col_no += 1
+                if col_no == n:
+                    col_no = 0
+            if row_no == n:
+                break
+            empty[i, a] = dna[row_no, col_no]
+        if row_no == n:
+            break
+    return empty
+
+def generate2(data, n): 
     
     rows, cols = data.shape
 
@@ -44,75 +137,6 @@ def generate(data, n):
         
     return empty
 
-            
-def shuffle(grid):
-    #print(datetime.now())
-    # random.seed(datetime.now())
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            grid[row,col] = random.randint(0,256)#int(npR.uniform()*256)
-    
-    return grid
-
-
-def revert(data, n, dna):
-
-    rows, cols = data.shape
-
-    hor = int(cols/n)
-    ver = int(rows/n)
-
-    empty = np.zeros((rows, cols))
-    row_no = 0
-    col_no = 0
-    
-    y = 0
-
-    for i in range(rows):
-        y += 1
-        for a in range(cols):
-            
-            if y % ver == 0:
-                row_no += 1
-                y = 0
-                if row_no == n:
-                    break
-
-            if a % (hor-1) == 0 and a != 0:
-                col_no += 1
-                if col_no == n:
-                    col_no = 0
-            if row_no == n:
-                break
-            empty[i, a] = dna[row_no, col_no]
-        if row_no == n:
-            break
-    return empty
-
-def revert2(data, n, dna):
-
-    rows, cols = data.shape
-
-    hor = int(cols/n)
-    ver = int(rows/n)
-
-    empty = np.zeros((rows, cols))
-
-    start_x = 0
-    start_y = 0
-
-    for row in dna:
-        for val in row:
-            empty[start_y:start_y+ver, start_x:start_x+hor] = val
-            start_x += hor
-            if start_x >= cols:
-                start_x = 0
-        start_y += ver
-        if start_y >= rows:
-            break
-
-    return empty
-
 if __name__ == "__main__":
     n = 64
     img = cv2.imread('sthuthi.jpg',0)
@@ -131,6 +155,6 @@ if __name__ == "__main__":
 
     dna = generate(data, n)
     # dna = shuffle(dna)
-    dna = revert2(data, n, dna)
+    dna = revert(data, n, dna)
     img = Image.fromarray(dna)
     img.show()

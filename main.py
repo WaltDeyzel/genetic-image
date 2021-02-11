@@ -2,7 +2,7 @@ import operator
 from Genome import Genome
 import numpy as np
 from numpy import random as npR
-from Generate import generate, shuffle, revert2
+from Generate import generate, shuffle, revert
 from cv2 import cv2 
 from Selection import rouletteSelection, tournamentSelection
 from Crossover import crossover
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     row_score = np.sum(key, axis=1)
     col_score = np.sum(key, axis=0)
 
-    population_total = 300
+    population_total = 100
     mutation_rate = 0.15
     crossover_rate = 1
     
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         scramble = shuffle(key)
         population.append(Genome(scramble))
 
-    for _ in range(250000):
+    for _ in range(100):
         population_fitness = 0
         
         for genome in population:
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         
     
     dna = best_genome.getDNA()
-    image = revert2(data, n, dna)
+    image = revert(data, n, dna)
     img = Image.fromarray(image)
     img.show()
 
