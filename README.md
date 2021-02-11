@@ -2,8 +2,10 @@
 
 Generate images with genetic algorithms using limited imput data.
 
-Dependencies:
+# Dependencies:
 
 Numpy
 OpenCV
+PIL
+Matplotlib
 ...
