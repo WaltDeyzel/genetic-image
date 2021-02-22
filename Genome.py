@@ -46,18 +46,19 @@ class Genome:
 
         score = 0
         for i in range(len(row_target)):
-            score += abs(row_score[i] - row_target[i])**2
-            score += abs(col_score[i] - col_target[i])**2
+            score += abs(row_score[i] - row_target[i])
+        for i in range(len(col_target)):
+            score += abs(col_score[i] - col_target[i])
         
         self.fit = 1/score
 
     def mutate(self):
         
-        for _ in range(5):
-            n = random.randint(0, len(self.dna)-1)
-            m = random.randint(0, len(self.dna)-1)
-            val = random.randint(0, 255)
-            self.dna[n,m] = val
+        for _ in range(8):
+            c = random.randint(0, len(self.dna[0])-1)
+            r = random.randint(0, len(self.dna)-1)
+            # print(r, c)
+            self.dna[r,c] = random.randint(0, 255)
         
 
     def setFitness2Population(self, total):
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     # print(dna)
     dna[0][0] = 143
     dna = np.asarray(img)
-
+    
     # print(dna)
     img = Image.fromarray(dna)
     img.save('greyscale2.png')

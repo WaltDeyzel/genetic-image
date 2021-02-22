@@ -8,22 +8,24 @@ def generate(data, n):
 
     rows, cols = data.shape
 
-    hor = int(cols/n)
-    ver = int(rows/n)
-    m = int(rows/ver)
-
-    empty = np.zeros((n, m), dtype=int)
+    dx = int(cols / n) 
+    # number of squares along Y axis
+    ver = int(rows / dx)
+    # number of squares along X axis
+    hor = n
+    
+    empty = np.zeros((ver, hor), dtype=int)
     
     start_x = 0
     start_y = 0
 
-    for r in range(len(empty)):
-        for c in range(len(empty[0])):
-            empty[r][c] =  int(np.sum(np.sum(data[start_y:start_y+ver, start_x:start_x+hor]))/(ver*hor))
-            start_x += hor
+    for r in range(ver):
+        for c in range(hor):
+            empty[r][c] =  int(np.sum(np.sum(data[start_y:start_y+dx, start_x:start_x+dx]))/(dx**2))
+            start_x += dx
             if start_x >= cols:
                 start_x = 0
-        start_y += ver
+        start_y += dx
         
     
     return empty
@@ -31,9 +33,7 @@ def generate(data, n):
 def revert(data, n, dna):
 
     rows, cols = data.shape
-
-    hor = int(cols/n)
-    ver = int(rows/n)
+    dx = int(cols / n) 
 
     empty = np.zeros((rows, cols))
 
@@ -42,11 +42,11 @@ def revert(data, n, dna):
 
     for row in dna:
         for val in row:
-            empty[start_y:start_y+ver, start_x:start_x+hor] = val
-            start_x += hor
+            empty[start_y:start_y+dx, start_x:start_x+dx] = val
+            start_x += dx
             if start_x >= cols:
                 start_x = 0
-        start_y += ver
+        start_y += dx
         if start_y >= rows:
             break
 
@@ -138,23 +138,25 @@ def generate2(data, n):
     return empty
 
 if __name__ == "__main__":
-    n = 64
-    img = cv2.imread('sthuthi.jpg',0)
+    n = 128
+    img = cv2.imread('images.png',0)
     data = np.asarray(img)
-    print(data.shape)
-    r, c = data.shape
-    r = int(r/n)*n
-    c = int(c/n)*n
-    data = data[0:r, 0:c]
-    print(data.shape)
+    rows, cols = data.shape
 
+    dx = int(cols / n) 
+    cols = n*dx
+    m = int(rows / dx)
+    rows = m*dx
+    
+    data = data[0:rows, 0:cols]
+    print(data.shape)
     # cv2.imshow('',img)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     
 
     dna = generate(data, n)
-    # dna = shuffle(dna)
+    #dna = shuffle(dna)
     dna = revert(data, n, dna)
     img = Image.fromarray(dna)
     img.show()

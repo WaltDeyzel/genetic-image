@@ -10,8 +10,8 @@ def crossover(option_1, option_2):
     n = int(len(dna_1)/2)
     m = int(len(dna_1[0])/2)
 
-    copy[0:n,0:n] = dna_2[0:n,0:n]
-    dna_2[0:n,0:n] = dna_1[0:n,0:n]
+    copy[0:n,0:m] = dna_2[0:n,0:m]
+    dna_2[0:n,0:m] = dna_1[0:n,0:m]
     child_1 = copy
     child_2 = dna_2
     
