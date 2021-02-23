@@ -29,20 +29,10 @@ class Genome:
     def closeImage(self):
         self.img.close()
     
-    def sumRow(self):
-
-        row_score = np.sum(self.dna, axis=1)
-        return row_score
-
-    def sumCol(self):
-
-        col_score = np.sum(self.dna, axis=0)
-        return col_score
-    
     def fitness(self, row_target, col_target):
-
-        row_score = self.sumRow()
-        col_score = self.sumCol()
+        dna = np.square(self.dna)
+        row_score = np.sum(dna, axis=1)
+        col_score = np.sum(dna, axis=0)
 
         score = 0
         for i in range(len(row_target)):
@@ -84,6 +74,3 @@ if __name__ == "__main__":
     img.save('greyscale2.png')
 
     Ted = Genome(dna)
-
-    print(Ted.sumRow())
-    print(Ted.sumCol())

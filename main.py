@@ -26,7 +26,10 @@ if __name__ == "__main__":
     data = data[0:r, 0:c]
     
     key = generate(data, n)
-    #print(key.shape)
+    print(key.shape)
+    # Row and Col sum data from original image. 
+    # Is used in the fitness function of the genome.
+    key = np.square(key)
     row_score = np.sum(key, axis=1)
     col_score = np.sum(key, axis=0)
 
@@ -41,7 +44,7 @@ if __name__ == "__main__":
         scramble = shuffle(key)
         population.append(Genome(scramble))
 
-    for i in range(500000):
+    for i in range(1000000):
         population_fitness = 0
         
         for genome in population:
