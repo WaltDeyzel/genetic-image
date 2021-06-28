@@ -8,7 +8,7 @@ def crossover(option_1, option_2):
     dna_2 = option_2.getDNA()
     copy = dna_1.copy()
     n = int(len(dna_1)/2)
-    m = int(len(dna_1[0])/2)
+    m = int(len(dna_1[0]))
 
     copy[0:n,0:m] = dna_2[0:n,0:m]
     dna_2[0:n,0:m] = dna_1[0:n,0:m]

@@ -58,7 +58,8 @@ def shuffle(grid):
     # random.seed(datetime.now())
     for row in range(len(grid)):
         for col in range(len(grid[0])):
-            grid[row,col] = random.randint(0,256)#int(npR.uniform()*256)
+            grid[row,col] = np.random.choice([0, 255], 1)
+            #random.randint(0,256)#int(npR.uniform()*256)
     
     return grid
 
@@ -138,8 +139,12 @@ def generate2(data, n):
     return empty
 
 if __name__ == "__main__":
-    n = 128
-    img = cv2.imread('images.png',0)
+    n = 64
+    img = cv2.imread('dot.png',0)
+    #grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  
+    (thresh, img) = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
     data = np.asarray(img)
     rows, cols = data.shape
 

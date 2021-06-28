@@ -44,11 +44,12 @@ class Genome:
 
     def mutate(self):
         
-        for _ in range(8):
+        for _ in range(3):
             c = random.randint(0, len(self.dna[0])-1)
             r = random.randint(0, len(self.dna)-1)
             # print(r, c)
-            self.dna[r,c] = random.randint(0, 255)
+            self.dna[r,c] = np.random.choice([0, 255], 1)
+            #random.randint(0, 255)
         
 
     def setFitness2Population(self, total):

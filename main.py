@@ -17,8 +17,9 @@ def show():
 
 
 if __name__ == "__main__":
-    n = 32
-    img = cv2.imread('images.png',0)
+    n = 64
+    img = cv2.imread('dot.png',0)
+    (thresh, img) = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
     data = np.asarray(img)
     r, c = data.shape
     r = int(r/n)*n
@@ -26,7 +27,7 @@ if __name__ == "__main__":
     data = data[0:r, 0:c]
     
     key = generate(data, n)
-    print(key.shape)
+    print(data.shape, key.shape)
     # Row and Col sum data from original image. 
     # Is used in the fitness function of the genome.
     key = np.square(key)
@@ -34,7 +35,7 @@ if __name__ == "__main__":
     col_score = np.sum(key, axis=0)
 
     population_total = 100
-    mutation_rate = 0.35
+    mutation_rate = 0.4
     crossover_rate = 1
     
     population = []
